@@ -1,6 +1,6 @@
 import allure
-
-from helper import TestCreateHelper
+import pytest
+from helper import CreateHelper
 from scooterapi import ScooterApi
 from data import TestAuthorization
 
@@ -8,8 +8,7 @@ from data import TestAuthorization
 class TestAuthorizationCourier:
     @allure.title('Проверка авторизации курьера с заполнением всех обязательных полей')
     def test_login_courier_positive(self, get_new_data):
-        payload = TestCreateHelper.register_new_courier_and_return_login_password(get_new_data)
-        response = ScooterApi.login(payload)
+        response = ScooterApi.create_and_login_courier(get_new_data)
         assert response.status_code == 200 and 'id' in response.json()
 
     @allure.title('Проверка авторизации курьера c пустыми полями')
@@ -23,3 +22,4 @@ class TestAuthorizationCourier:
         response = ScooterApi.login(TestAuthorization.AUTH_NON_EXISTEN_COURIER)
         assert response.status_code == 404 and response.json()[
             'message'] == TestAuthorization.MESSAGE_AUTHORIZATION_NON_EXISTEN_COURIER
+

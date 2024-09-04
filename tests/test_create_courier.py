@@ -1,15 +1,17 @@
 import allure
-
-from helper import TestCreateHelper
+import requests
+import urls
+from helper import CreateHelper
 from scooterapi import ScooterApi
 from data import TestAuthorization
 
 
 class TestCreateCourier:
     @allure.title('Проверка, что курьера можно создать c заполнением всех обяз полей и запрос возвращает правильный ответ')
-    def test_create_courier(self):
-        response = ScooterApi.create_courier(TestCreateHelper.generate_create_body())
+    def test_create_courier(self, get_new_data):
+        response = ScooterApi.create_courier(get_new_data)
         assert response.status_code == 201 and response.text == '{"ok":true}'
+
 
     @allure.title('Проверка, что нельзя создать двух одинаковых курьеров')
     def test_create_same_courier(self):
